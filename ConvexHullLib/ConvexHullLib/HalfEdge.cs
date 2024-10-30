@@ -7,11 +7,22 @@
     /// </summary>
     public class HalfEdge
     {
+        public HalfEdge(int index, Vertex origin)
+        {
+            Index = index;
+            Origin = origin;
+        }
+
+        /// <summary>
+        /// Gets the index of the half-edge.
+        /// </summary>
+        public int Index { get; }
+
         /// <summary>
         /// Gets or sets the origin vertex of this half-edge.
         /// This vertex serves as the starting point for the half-edge.
         /// </summary>
-        public Vertex Origin { get; set; } = null!;
+        public Vertex Origin { get; set; }
 
         /// <summary>
         /// Gets or sets the face that this half-edge belongs to.
