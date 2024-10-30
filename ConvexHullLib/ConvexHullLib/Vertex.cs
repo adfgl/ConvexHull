@@ -28,6 +28,13 @@
             Z = z;
         }
 
+        public void Deconstruct(out double x, out double y, out double z)
+        {
+            x = X;
+            y = Y;
+            z = Z;
+        }
+
         /// <summary>
         /// Gets the index of the vertex.
         /// </summary>
@@ -52,6 +59,24 @@
         /// Gets or sets the Z coordinate of the vertex.
         /// </summary>
         public double Z { get; set; }
+
+        public double this[int index]
+        {
+            get
+            {
+                switch (index)
+                {
+                    case 0:
+                        return X;
+                    case 1:
+                        return Y;
+                    case 2:
+                        return Z;
+                    default:
+                        throw new IndexOutOfRangeException();
+                }
+            }
+        }
 
         /// <summary>
         /// Returns an enumerable collection of half-edges around this vertex in clockwise order.

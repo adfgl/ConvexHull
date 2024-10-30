@@ -45,29 +45,7 @@
         public Face RecalculatePlane()
         {
             var (a, b, c) = (Edge.Prev.Origin, Edge.Origin, Edge.Next.Origin);
-
-            // subtract vectors
-            double xBA = b.X - a.X;
-            double yBA = b.Y - a.Y;
-            double zBA = b.Z - a.Z;
-
-            double xCA = c.X - a.X;
-            double yCA = c.Y - a.Y;
-            double zCA = c.Z - a.Z;
-
-            // cross product
-            double cpx = yBA * zCA - yCA * zBA;
-            double cpy = zBA * xCA - zCA * xBA;
-            double cpz = xBA * yCA - xCA * yBA;
-
-            // normalize
-            double len = Math.Sqrt(cpx * cpx + cpy * cpy + cpz * cpz);
-            _normalX = cpx / len;
-            _normalY = cpy / len;
-            _normalZ = cpz / len;
-
-            // calculate distance to origin
-            _distanceToOrigin = _normalX * a.X + _normalY * a.Y + _normalZ * a.Z;
+            GeometryHelper.CalculatePlane(a.X, a.Y, a.Z, b.X, b.Y, b.Z, c.X, c.Y, c.Z, out _normalX, out _normalY, out _normalZ, out _distanceToOrigin);
             return this;
         }
 
@@ -85,7 +63,7 @@
         /// </returns>
         public double SignedDistance(double x, double y, double z)
         {
-            return _normalX * x + _normalY * y + _normalZ * z - _distanceToOrigin;
+            return GeometryHelper.SignedDistanceToPlane(_normalX, _normalY, _normalZ, _distanceToOrigin, x, y, z);
         }
 
         /// <summary>
@@ -151,7 +129,7 @@
         public override string ToString()
         {
             var (a, b, c) = (Edge.Prev.Origin, Edge.Origin, Edge.Next.Origin);
-            return $"[{Index}] ({a.Index}) ({b.Index}) ({c.Index})";
+            return $"[{Index}] v{a.Index} v{b.Index}) v{c.Index}";
         }
     }
 }

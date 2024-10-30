@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ConvexHullLib")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+897e9b6bd1277f8faae107e0029726f3a08858ac")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2284fe8375c62781d4097297ee379a83465590b1")]
 [assembly: System.Reflection.AssemblyProductAttribute("ConvexHullLib")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ConvexHullLib")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

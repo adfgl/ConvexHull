@@ -60,7 +60,7 @@
 
         public override string ToString()
         {
-            return $"[{Origin.Index} {Next.Origin.Index}]";
+            return $"[{Index}] v{Origin.Index} v{Next.Origin.Index}";
         }
     }
 }
