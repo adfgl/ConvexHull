@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ConvexHullTests")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6cb724bcacf2f94cb8660754b3ca27c7452c44da")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0d92dd352cf276362ef8b13c51c13cc236a0c5c8")]
 [assembly: System.Reflection.AssemblyProductAttribute("ConvexHullTests")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ConvexHullTests")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
