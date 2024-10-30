@@ -1,12 +1,13 @@
-﻿namespace ConvexHullLib
+﻿using System.Numerics;
+
+namespace ConvexHullLib
 {
     /// <summary>
     /// Represents a face in a mesh, defined by its edges and geometrice plane properties.
     /// </summary>
     public class Face
     {
-        double _normalX, _normalY, _normalZ;
-        double _distanceToOrigin;
+        Plane _plane;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Face"/> class with the specified index.
@@ -45,7 +46,7 @@
         public Face RecalculatePlane()
         {
             var (a, b, c) = (Edge.Prev.Origin, Edge.Origin, Edge.Next.Origin);
-            GeometryHelper.CalculatePlane(a.X, a.Y, a.Z, b.X, b.Y, b.Z, c.X, c.Y, c.Z, out _normalX, out _normalY, out _normalZ, out _distanceToOrigin);
+            _plane = new Plane(a.X, a.Y, a.Z, b.X, b.Y, b.Z, c.X, c.Y, c.Z);
             return this;
         }
 
@@ -63,7 +64,7 @@
         /// </returns>
         public double SignedDistance(double x, double y, double z)
         {
-            return GeometryHelper.SignedDistanceToPlane(_normalX, _normalY, _normalZ, _distanceToOrigin, x, y, z);
+            return _plane.SignedDistance(x, y, z);
         }
 
         /// <summary>
