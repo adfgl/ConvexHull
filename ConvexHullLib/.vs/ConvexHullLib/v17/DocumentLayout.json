@@ -3,16 +3,24 @@
   "WorkspaceRootPath": "C:\\Users\\zhukopav\\Documents\\git\\ConvexHull\\ConvexHullLib\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{B95E4F59-FDC7-4F26-A6FC-E8836ADD00B6}|ConvexHullLib\\ConvexHullLib.csproj|c:\\users\\zhukopav\\documents\\git\\convexhull\\convexhulllib\\convexhulllib\\halfedge.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B95E4F59-FDC7-4F26-A6FC-E8836ADD00B6}|ConvexHullLib\\ConvexHullLib.csproj|solutionrelative:convexhulllib\\halfedge.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B95E4F59-FDC7-4F26-A6FC-E8836ADD00B6}|ConvexHullLib\\ConvexHullLib.csproj|c:\\users\\zhukopav\\documents\\git\\convexhull\\convexhulllib\\convexhulllib\\face.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B95E4F59-FDC7-4F26-A6FC-E8836ADD00B6}|ConvexHullLib\\ConvexHullLib.csproj|solutionrelative:convexhulllib\\face.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B95E4F59-FDC7-4F26-A6FC-E8836ADD00B6}|ConvexHullLib\\ConvexHullLib.csproj|c:\\users\\zhukopav\\documents\\git\\convexhull\\convexhulllib\\convexhulllib\\vertex.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B95E4F59-FDC7-4F26-A6FC-E8836ADD00B6}|ConvexHullLib\\ConvexHullLib.csproj|solutionrelative:convexhulllib\\vertex.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{3C8BCF77-B8D1-4828-B376-6061E9F80B0F}|DebugConsole\\DebugConsole.csproj|c:\\users\\zhukopav\\documents\\git\\convexhull\\convexhulllib\\debugconsole\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{3C8BCF77-B8D1-4828-B376-6061E9F80B0F}|DebugConsole\\DebugConsole.csproj|solutionrelative:debugconsole\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{55F80ACE-FB1C-4D1E-AC8B-868B4BBB2CCB}|ConvexHullTests\\ConvexHullTests.csproj|c:\\users\\zhukopav\\documents\\git\\convexhull\\convexhulllib\\convexhulltests\\unittest1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{55F80ACE-FB1C-4D1E-AC8B-868B4BBB2CCB}|ConvexHullTests\\ConvexHullTests.csproj|solutionrelative:convexhulltests\\unittest1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B95E4F59-FDC7-4F26-A6FC-E8836ADD00B6}|ConvexHullLib\\ConvexHullLib.csproj|c:\\users\\zhukopav\\documents\\git\\convexhull\\convexhulllib\\convexhulllib\\class1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B95E4F59-FDC7-4F26-A6FC-E8836ADD00B6}|ConvexHullLib\\ConvexHullLib.csproj|solutionrelative:convexhulllib\\class1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -22,11 +30,37 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Face.cs",
+              "DocumentMoniker": "C:\\Users\\zhukopav\\Documents\\git\\ConvexHull\\ConvexHullLib\\ConvexHullLib\\Face.cs",
+              "RelativeDocumentMoniker": "ConvexHullLib\\Face.cs",
+              "ToolTip": "C:\\Users\\zhukopav\\Documents\\git\\ConvexHull\\ConvexHullLib\\ConvexHullLib\\Face.cs",
+              "RelativeToolTip": "ConvexHullLib\\Face.cs",
+              "ViewState": "AQIAAFUAAAAAAAAAAAAcwJ0AAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-30T11:46:44.44Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "HalfEdge.cs",
+              "DocumentMoniker": "C:\\Users\\zhukopav\\Documents\\git\\ConvexHull\\ConvexHullLib\\ConvexHullLib\\HalfEdge.cs",
+              "RelativeDocumentMoniker": "ConvexHullLib\\HalfEdge.cs",
+              "ToolTip": "C:\\Users\\zhukopav\\Documents\\git\\ConvexHull\\ConvexHullLib\\ConvexHullLib\\HalfEdge.cs",
+              "RelativeToolTip": "ConvexHullLib\\HalfEdge.cs",
+              "ViewState": "AQIAACAAAAAAAAAAAAAkwDEAAAApAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-30T11:46:38.828Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\zhukopav\\Documents\\git\\ConvexHull\\ConvexHullLib\\DebugConsole\\Program.cs",
               "RelativeDocumentMoniker": "DebugConsole\\Program.cs",
@@ -39,7 +73,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 4,
               "Title": "UnitTest1.cs",
               "DocumentMoniker": "C:\\Users\\zhukopav\\Documents\\git\\ConvexHull\\ConvexHullLib\\ConvexHullTests\\UnitTest1.cs",
               "RelativeDocumentMoniker": "ConvexHullTests\\UnitTest1.cs",
@@ -47,18 +81,17 @@
               "RelativeToolTip": "ConvexHullTests\\UnitTest1.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-30T11:36:08.588Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-30T11:36:08.588Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "Class1.cs",
-              "DocumentMoniker": "C:\\Users\\zhukopav\\Documents\\git\\ConvexHull\\ConvexHullLib\\ConvexHullLib\\Class1.cs",
-              "RelativeDocumentMoniker": "ConvexHullLib\\Class1.cs",
-              "ToolTip": "C:\\Users\\zhukopav\\Documents\\git\\ConvexHull\\ConvexHullLib\\ConvexHullLib\\Class1.cs",
-              "RelativeToolTip": "ConvexHullLib\\Class1.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Title": "Vertex.cs",
+              "DocumentMoniker": "C:\\Users\\zhukopav\\Documents\\git\\ConvexHull\\ConvexHullLib\\ConvexHullLib\\Vertex.cs",
+              "RelativeDocumentMoniker": "ConvexHullLib\\Vertex.cs",
+              "ToolTip": "C:\\Users\\zhukopav\\Documents\\git\\ConvexHull\\ConvexHullLib\\ConvexHullLib\\Vertex.cs",
+              "RelativeToolTip": "ConvexHullLib\\Vertex.cs",
+              "ViewState": "AQIAAEUAAAAAAAAAAAAAwEIAAAAoAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-10-30T11:35:52.705Z",
               "EditorCaption": ""
