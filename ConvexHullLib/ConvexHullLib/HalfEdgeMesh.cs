@@ -1,6 +1,6 @@
 ﻿namespace ConvexHullLib
 {
-    public class HalfEdgeMesh
+    public class HalfEdgeMesh : IReadOnlyHalfEdgeMesh
     {
         readonly List<Vertex> _vertices;
         readonly List<Face> _faces;

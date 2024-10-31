@@ -25,7 +25,7 @@
             }
         }
 
-        public HalfEdgeMesh Mesh => _mesh;
+        public IReadOnlyHalfEdgeMesh Mesh => _mesh;
 
         public bool Add(double x, double y, double z)
         {
