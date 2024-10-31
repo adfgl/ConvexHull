@@ -9,36 +9,23 @@
 
         public ConvexHull3(IList<T> vertices, Func<T, double> getX, Func<T, double> getY, Func<T, double> getZ)
         {
-            _mesh = new HalfEdgeMesh(vertices.Count);
-            foreach (T vertex in vertices)
-            {
-                double x = getX(vertex);
-                double y = getY(vertex);
-                double z = getZ(vertex);
-                _mesh.Add(x, y, z);
-            }
-
-            if (vertices.Count < 4)
-            {
-                throw new InvalidOperationException("At least 4 points are required to build the convex hull.");
-            }
-
-            GetFirstTwoPoints(_mesh.Vertices, out int p1, out int p2);
-            GetThirdTetrahedronPoint(_mesh.Vertices, p1, p2, out int p3);
-            GetForthTetrahedronPoint(_mesh.Vertices, p1, p2, p3, out int p4);
+            _mesh = BuildTetrahedron(vertices, getX, getY, getZ);
+            int p1 = _mesh.Vertices[0].Index;
+            int p2 = _mesh.Vertices[1].Index;
+            int p3 = _mesh.Vertices[2].Index;
+            int p4 = _mesh.Vertices[3].Index;
 
             for (int i = 0; i < _mesh.Vertices.Count; i++)
             {
                 if (i != p1 && i != p2 && i != p3 && i != p4)
                 {
                     T vertex = vertices[i];
-                    double x = getX(vertex);
-                    double y = getY(vertex);
-                    double z = getZ(vertex);
-                    Add(x, y, z);
+                    Add(getX(vertex), getY(vertex), getZ(vertex));
                 }
             }
         }
+
+        public HalfEdgeMesh Mesh => _mesh;
 
         public bool Add(double x, double y, double z)
         {
@@ -49,156 +36,6 @@
                 return true;
             }
             return false;
-        }
-
-        static void GetFirstTwoPoints(IReadOnlyList<Vertex> vertices, out int p1, out int p2)
-        {
-            p1 = NO_INDEX;
-            p2 = NO_INDEX;
-
-            double minX, minY, minZ, maxX, maxY, maxZ;
-            minX = minY = minZ = double.MaxValue;
-            maxX = maxY = maxZ = double.MinValue;
-
-            int[] min = new int[3];
-            int[] max = new int[3];
-            for (int i = 0; i < vertices.Count; i++)
-            {
-                var (x, y, z) = vertices[i];
-                if (x < minX)
-                {
-                    minX = x;
-                    min[0] = i;
-                }
-
-                if (y < minY)
-                {
-                    minY = y;
-                    min[1] = i;
-                }
-
-                if (z < minZ)
-                {
-                    minZ = z;
-                    min[2] = i;
-                }
-
-                if (x > maxX)
-                {
-                    maxX = x;
-                    max[0] = i;
-                }
-
-                if (y > maxY)
-                {
-                    maxY = y;
-                    max[1] = i;
-                }
-
-                if (z > maxZ)
-                {
-                    maxZ = z;
-                    max[2] = i;
-                }
-            }
-
-            if (p1 == NO_INDEX || p2 == NO_INDEX)
-            {
-                throw new InvalidOperationException("LOGIC ERROR: could not build initial tetrahedron.");
-            }
-        }
-
-        static void GetForthTetrahedronPoint(IReadOnlyList<Vertex> points, int p1, int p2, int p3, out int p4)
-        {
-            p4 = NO_INDEX;
-
-            Vertex a = points[p1];
-            Vertex b = points[p2];
-            Vertex c = points[p3];
-
-            Plane plane = new Plane(a.X, a.Y, a.Z, b.X, b.Y, b.Z, c.X, c.Y, c.Z);
-
-            double maxDistance = double.MinValue;
-            for (int i = 0; i < points.Count; i++)
-            {
-                if (i != p1 && i != p2 && i != p3)
-                {
-                    var (x, y, z) = points[i];
-                    double distance = Math.Abs(plane.SignedDistance(x, y, z));
-                    if (distance > maxDistance)
-                    {
-                        maxDistance = distance;
-                        p4 = i;
-                    }
-                }
-            }
-
-            if (p4 == NO_INDEX)
-            {
-                throw new InvalidOperationException("LOGIC ERROR: could not build initial tetrahedron.");
-            }
-        }
-
-        static double SquareDistanceFromPointToLine(
-            double ax, double ay, double az,
-            double bx, double by, double bz,
-            double x, double y, double z)
-        {
-            // Direction vector of the line (from A to B)
-            double ABx = bx - ax;
-            double ABy = by - ay;
-            double ABz = bz - az;
-
-            // Vector from A to P
-            double APx = x - ax;
-            double APy = y - ay;
-            double APz = z - az;
-
-            // Calculate the dot products
-            double AB_AB = ABx * ABx + ABy * ABy + ABz * ABz; // ||AB||^2
-            double AP_AB = APx * ABx + APy * ABy + APz * ABz; // AP · AB
-
-            // Projection of AP onto AB
-            double projFactor = AP_AB / AB_AB;
-            double projX = projFactor * ABx;
-            double projY = projFactor * ABy;
-            double projZ = projFactor * ABz;
-
-            // Distance vector from P to the projection of P onto the line
-            double Dx = APx - projX;
-            double Dy = APy - projY;
-            double Dz = APz - projZ;
-
-            // Calculate the distance
-            return Dx * Dx + Dy * Dy + Dz * Dz;
-        }
-
-        static void GetThirdTetrahedronPoint(IReadOnlyList<Vertex> points, int p1, int p2, out int p3)
-        {
-            p3 = NO_INDEX;
-
-            double maxDistance = double.MinValue;
-            var (x1, y1, z1) = points[p1];
-            var (x2, y2, z2) = points[p2];
-            for (int i = 0; i < points.Count; i++)
-            {
-                if (i != p1 && i != p2)
-                {
-                    var (x, y, z) = points[i];
-
-                    double distance = SquareDistanceFromPointToLine(x1, y1, z1, x2, y2, z2, x, y, z);
-                    if (distance > maxDistance)
-                    {
-                        maxDistance = distance;
-                        p3 = i;
-                    }
-                }
-            }
-
-            if (p3 == NO_INDEX)
-            {
-                throw new InvalidOperationException("LOGIC ERROR: could not build initial tetrahedron.");
-            }
         }
 
         static void SetTwin(HalfEdge edge, HalfEdge twin)
@@ -296,6 +133,240 @@
                 }
             }
             return removed;
+        }
+
+        public static HalfEdgeMesh BuildTetrahedron(IList<T> points, Func<T, double> getX, Func<T, double> getY, Func<T, double> getZ)
+        {
+            if (points.Count < 4)
+            {
+                throw new InvalidOperationException("At least 4 points are required to build tetrahedron.");
+            }
+
+            GetFirstTwoPoints(points, getX, getY, getZ, out int p1, out int p2);
+            GetThirdTetrahedronPoint(points, getX, getY, getZ, p1, p2, out int p3);
+            GetForthTetrahedronPoint(points, getX, getY, getZ, p1, p2, p3, out int p4);
+
+            HalfEdgeMesh mesh = new HalfEdgeMesh(points.Count);
+
+            Vertex v1 = mesh.Add(getX(points[p1]), getY(points[p1]), getZ(points[p1]));
+            Vertex v2 = mesh.Add(getX(points[p2]), getY(points[p2]), getZ(points[p2]));
+            Vertex v3 = mesh.Add(getX(points[p3]), getY(points[p3]), getZ(points[p3]));
+            Vertex v4 = mesh.Add(getX(points[p4]), getY(points[p4]), getZ(points[p4]));
+
+            Plane plane = new Plane(v1.X, v1.Y, v1.Z, v2.X, v2.Y, v2.Z, v3.X, v3.Y, v3.Z);
+
+            Face tetraBase;
+            if (plane.SignedDistance(v4.X, v4.Y, v4.Z) < 0)
+            {
+                tetraBase = mesh.Add(v1, v2, v3);
+            }
+            else
+            {
+                tetraBase = mesh.Add(v3, v2, v1);
+            }
+
+            BuildNewTriangles(mesh, v4, tetraBase.Backward().ToList());
+            return mesh;
+        }
+
+        static double GetComponent(int component, T point, Func<T, double> getX, Func<T, double> getY, Func<T, double> getZ)
+        {
+            switch (component)
+            {
+                case 0:
+                    return getX(point);
+                case 1:
+                    return getY(point);
+                case 2:
+                    return getZ(point);
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(component));
+            }
+        }
+
+        static void GetFirstTwoPoints(IList<T> points, Func<T, double> getX, Func<T, double> getY, Func<T, double> getZ, out int p1, out int p2)
+        {
+            p1 = NO_INDEX;
+            p2 = NO_INDEX;
+
+            double minX, minY, minZ, maxX, maxY, maxZ;
+            minX = minY = minZ = double.MaxValue;
+            maxX = maxY = maxZ = double.MinValue;
+
+            int[] min = new int[3];
+            int[] max = new int[3];
+            for (int i = 0; i < points.Count; i++)
+            {
+                T point = points[i];
+                double x = getX(point);
+                double y = getY(point);
+                double z = getZ(point);
+
+                if (x < minX)
+                {
+                    minX = x;
+                    min[0] = i;
+                }
+
+                if (y < minY)
+                {
+                    minY = y;
+                    min[1] = i;
+                }
+
+                if (z < minZ)
+                {
+                    minZ = z;
+                    min[2] = i;
+                }
+
+                if (x > maxX)
+                {
+                    maxX = x;
+                    max[0] = i;
+                }
+
+                if (y > maxY)
+                {
+                    maxY = y;
+                    max[1] = i;
+                }
+
+                if (z > maxZ)
+                {
+                    maxZ = z;
+                    max[2] = i;
+                }
+            }
+
+            double maxDistance = double.MinValue;
+            int index = NO_INDEX;
+            for (int i = 0; i < 3; i++)
+            {
+                T minPOint = points[min[i]];
+                T maxPoint = points[max[i]];
+
+                double maxComponent = GetComponent(i, points[max[i]], getX, getY, getZ);
+                double minComponent = GetComponent(i, points[min[i]], getX, getY, getZ);
+                double difference = maxComponent - minComponent;
+                if (maxDistance < difference)
+                {
+                    maxDistance = difference;
+                    index = i;
+                }
+            }
+
+            p1 = min[index];
+            p2 = max[index];
+
+            if (p1 == NO_INDEX || p2 == NO_INDEX)
+            {
+                throw new InvalidOperationException("LOGIC ERROR: could not build initial tetrahedron.");
+            }
+        }
+
+        public static void GetThirdTetrahedronPoint(IList<T> points, Func<T, double> getX, Func<T, double> getY, Func<T, double> getZ, int p1, int p2, out int p3)
+        {
+            p3 = NO_INDEX;
+
+            double maxDistance = double.MinValue;
+
+            double x1 = getX(points[p1]);
+            double y1 = getY(points[p1]);
+            double z1 = getZ(points[p1]);
+
+            double x2 = getX(points[p2]);
+            double y2 = getY(points[p2]);
+            double z2 = getZ(points[p2]);
+            for (int i = 0; i < points.Count; i++)
+            {
+                if (i != p1 && i != p2)
+                {
+                    double x = getX(points[i]);
+                    double y = getY(points[i]);
+                    double z = getZ(points[i]);
+
+                    double distance = SquareDistanceFromPointToLine(x1, y1, z1, x2, y2, z2, x, y, z);
+                    if (distance > maxDistance)
+                    {
+                        maxDistance = distance;
+                        p3 = i;
+                    }
+                }
+            }
+
+            if (p3 == NO_INDEX)
+            {
+                throw new InvalidOperationException("LOGIC ERROR: could not build initial tetrahedron.");
+            }
+        }
+
+        public static void GetForthTetrahedronPoint(IList<T> points, Func<T, double> getX, Func<T, double> getY, Func<T, double> getZ, int p1, int p2, int p3, out int p4)
+        {
+            p4 = NO_INDEX;
+
+            T a = points[p1];
+            T b = points[p2];
+            T c = points[p3];
+
+            Plane plane = new Plane(
+                getX(a), getY(a), getZ(a),
+                getX(b), getY(b), getZ(b),
+                getX(c), getY(c), getZ(c));
+
+            double maxDistance = double.MinValue;
+            for (int i = 0; i < points.Count; i++)
+            {
+                if (i != p1 && i != p2 && i != p3)
+                {
+                    T point = points[i];
+                    double distance = Math.Abs(plane.SignedDistance(getX(point), getY(point), getZ(point)));
+                    if (distance > maxDistance)
+                    {
+                        maxDistance = distance;
+                        p4 = i;
+                    }
+                }
+            }
+
+            if (p4 == NO_INDEX)
+            {
+                throw new InvalidOperationException("LOGIC ERROR: could not build initial tetrahedron.");
+            }
+        }
+
+        public static double SquareDistanceFromPointToLine(
+            double ax, double ay, double az,
+            double bx, double by, double bz,
+            double x, double y, double z)
+        {
+            // Direction vector of the line (from A to B)
+            double ABx = bx - ax;
+            double ABy = by - ay;
+            double ABz = bz - az;
+
+            // Vector from A to P
+            double APx = x - ax;
+            double APy = y - ay;
+            double APz = z - az;
+
+            // Calculate the dot products
+            double AB_AB = ABx * ABx + ABy * ABy + ABz * ABz; // ||AB||^2
+            double AP_AB = APx * ABx + APy * ABy + APz * ABz; // AP · AB
+
+            // Projection of AP onto AB
+            double projFactor = AP_AB / AB_AB;
+            double projX = projFactor * ABx;
+            double projY = projFactor * ABy;
+            double projZ = projFactor * ABz;
+
+            // Distance vector from P to the projection of P onto the line
+            double Dx = APx - projX;
+            double Dy = APy - projY;
+            double Dz = APz - projZ;
+
+            // Calculate the distance
+            return Dx * Dx + Dy * Dy + Dz * Dz;
         }
     }
 }

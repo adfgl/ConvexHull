@@ -57,7 +57,9 @@
                 FindTwin(ca);
             }
 
+            face = face.RecalculatePlane();
             _faces.Add(face);
+
             _edges.Add(ab);
             _edges.Add(bc);
             _edges.Add(ca);

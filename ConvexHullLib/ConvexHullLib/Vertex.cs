@@ -60,24 +60,6 @@
         /// </summary>
         public double Z { get; set; }
 
-        public double this[int index]
-        {
-            get
-            {
-                switch (index)
-                {
-                    case 0:
-                        return X;
-                    case 1:
-                        return Y;
-                    case 2:
-                        return Z;
-                    default:
-                        throw new IndexOutOfRangeException();
-                }
-            }
-        }
-
         /// <summary>
         /// Returns an enumerable collection of half-edges around this vertex in clockwise order.
         /// </summary>

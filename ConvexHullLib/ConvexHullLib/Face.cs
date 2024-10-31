@@ -19,17 +19,6 @@ namespace ConvexHullLib
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Face"/> class with the specified index and half-edge.
-        /// </summary>
-        /// <param name="index">The index of the face.</param>
-        /// <param name="edge">The half-edge that represents one of the edges of this face.</param>
-        public Face(int index, HalfEdge edge) : this(index)
-        {
-            Edge = edge;
-            RecalculatePlane();
-        }
-
-        /// <summary>
         /// Gets the index of the face.
         /// </summary>
         public int Index { get; }
