@@ -6,16 +6,29 @@ namespace DebugConsole
     {
         static void Main(string[] args)
         {
-            HalfEdgeMesh ds = new HalfEdgeMesh();
-            Vertex a = ds.Add(0, 0, 0);
-            Vertex b = ds.Add(5, 5, 0);
-            Vertex c = ds.Add(10, 0, 0);
+            Point[] points =
+            [
+                new Point(0, 0, 0),
+                new Point(1, 0, 0),
+                new Point(0, 1, 0),
+                new Point(0, 0, 1)
+            ];
 
-            Face face = ds.Add(a, b, c, true);
-
-            ds.RemoveFaceAt(0);
+            ConvexHull<Point> hull = new ConvexHull<Point>(points, p => p.X, p => p.Y, p => p.Z);
         }
 
-      
+        public class Point
+        {
+            public Point(double x, double y, double z)
+            {
+                X = x;
+                Y = y;
+                Z = z;
+            }
+
+            public double X { get; set; }
+            public double Y { get; set; }
+            public double Z { get; set; }
+        }
     }
 }

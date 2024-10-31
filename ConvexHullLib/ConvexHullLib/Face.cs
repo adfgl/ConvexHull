@@ -119,7 +119,7 @@ namespace ConvexHullLib
         public override string ToString()
         {
             var (a, b, c) = (Edge.Prev.Origin, Edge.Origin, Edge.Next.Origin);
-            return $"[{Index}] v{a.Index} v{b.Index}) v{c.Index}";
+            return $"[{Index}] v{a.Index} v{b.Index} v{c.Index}";
         }
     }
 }

@@ -1,13 +1,13 @@
 ﻿namespace ConvexHullLib
 {
-    public class ConvexHull3<T>
+    public class ConvexHull<T>
     {
         const int NO_INDEX = -1;
 
         readonly HalfEdgeMesh _mesh;
         readonly List<HalfEdge> _horizon = new List<HalfEdge>();
 
-        public ConvexHull3(IList<T> vertices, Func<T, double> getX, Func<T, double> getY, Func<T, double> getZ)
+        public ConvexHull(IList<T> vertices, Func<T, double> getX, Func<T, double> getY, Func<T, double> getZ)
         {
             _mesh = BuildTetrahedron(vertices, getX, getY, getZ);
             int p1 = _mesh.Vertices[0].Index;
@@ -37,6 +37,42 @@
             }
             return false;
         }
+
+        public static HalfEdgeMesh BuildTetrahedron(IList<T> points, Func<T, double> getX, Func<T, double> getY, Func<T, double> getZ)
+        {
+            if (points.Count < 4)
+            {
+                throw new InvalidOperationException("At least 4 points are required to build tetrahedron.");
+            }
+
+            GetFirstTwoPoints(points, getX, getY, getZ, out int p1, out int p2);
+            GetThirdTetrahedronPoint(points, getX, getY, getZ, p1, p2, out int p3);
+            GetForthTetrahedronPoint(points, getX, getY, getZ, p1, p2, p3, out int p4);
+
+            HalfEdgeMesh mesh = new HalfEdgeMesh(points.Count);
+
+            Vertex v1 = mesh.Add(getX(points[p1]), getY(points[p1]), getZ(points[p1]));
+            Vertex v2 = mesh.Add(getX(points[p2]), getY(points[p2]), getZ(points[p2]));
+            Vertex v3 = mesh.Add(getX(points[p3]), getY(points[p3]), getZ(points[p3]));
+            Vertex v4 = mesh.Add(getX(points[p4]), getY(points[p4]), getZ(points[p4]));
+
+            Plane plane = new Plane(v1.X, v1.Y, v1.Z, v2.X, v2.Y, v2.Z, v3.X, v3.Y, v3.Z);
+
+            // point 4 must be 'behind' the f123 plane
+            Face tetraBase;
+            if (plane.SignedDistance(v4.X, v4.Y, v4.Z) < 0)
+            {
+                tetraBase = mesh.Add(v1, v2, v3);
+            }
+            else
+            {
+                tetraBase = mesh.Add(v3, v2, v1);
+            }
+
+            BuildNewTriangles(mesh, v4, tetraBase.Backward().ToList());
+            return mesh;
+        }
+
 
         static void SetTwin(HalfEdge edge, HalfEdge twin)
         {
@@ -133,40 +169,6 @@
                 }
             }
             return removed;
-        }
-
-        public static HalfEdgeMesh BuildTetrahedron(IList<T> points, Func<T, double> getX, Func<T, double> getY, Func<T, double> getZ)
-        {
-            if (points.Count < 4)
-            {
-                throw new InvalidOperationException("At least 4 points are required to build tetrahedron.");
-            }
-
-            GetFirstTwoPoints(points, getX, getY, getZ, out int p1, out int p2);
-            GetThirdTetrahedronPoint(points, getX, getY, getZ, p1, p2, out int p3);
-            GetForthTetrahedronPoint(points, getX, getY, getZ, p1, p2, p3, out int p4);
-
-            HalfEdgeMesh mesh = new HalfEdgeMesh(points.Count);
-
-            Vertex v1 = mesh.Add(getX(points[p1]), getY(points[p1]), getZ(points[p1]));
-            Vertex v2 = mesh.Add(getX(points[p2]), getY(points[p2]), getZ(points[p2]));
-            Vertex v3 = mesh.Add(getX(points[p3]), getY(points[p3]), getZ(points[p3]));
-            Vertex v4 = mesh.Add(getX(points[p4]), getY(points[p4]), getZ(points[p4]));
-
-            Plane plane = new Plane(v1.X, v1.Y, v1.Z, v2.X, v2.Y, v2.Z, v3.X, v3.Y, v3.Z);
-
-            Face tetraBase;
-            if (plane.SignedDistance(v4.X, v4.Y, v4.Z) < 0)
-            {
-                tetraBase = mesh.Add(v1, v2, v3);
-            }
-            else
-            {
-                tetraBase = mesh.Add(v3, v2, v1);
-            }
-
-            BuildNewTriangles(mesh, v4, tetraBase.Backward().ToList());
-            return mesh;
         }
 
         static double GetComponent(int component, T point, Func<T, double> getX, Func<T, double> getY, Func<T, double> getZ)
